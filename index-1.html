@@ -1,0 +1,50 @@
+<!doctype html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>رحلتي إلى مصر 🇪🇬</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f7f3ea;color:#2d241c}
+header{background:linear-gradient(135deg,#173f35,#8a642f);color:#fff;padding:25px 15px;text-align:center;position:sticky;top:0;z-index:5}header h1{margin:0 0 7px}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:15px}button{border:0;border-radius:11px;padding:11px 15px;background:#b88a45;color:#fff;font-weight:bold;cursor:pointer}
+.container{max-width:1050px;margin:auto;padding:25px 15px}.hero{text-align:center;padding:35px 10px}.hero h2{font-size:38px;color:#31564b;margin:5px}.hero p{max-width:650px;margin:15px auto;line-height:1.8;color:#665b50}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card,.stat,.form{background:#fff;border-radius:17px;padding:18px;box-shadow:0 5px 20px #00000012}.stat{text-align:center}.stat b{display:block;font-size:28px;color:#8a642f}
+.places{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.place{padding:0;overflow:hidden}.place img{width:100%;height:170px;object-fit:cover;display:block}.place div:last-child{padding:15px}.place h3{color:#31564b}.place p{line-height:1.7;color:#6d6257;font-size:14px}
+.form{display:grid;gap:12px;max-width:700px;margin:auto}input,textarea,select{width:100%;padding:12px;border:1px solid #ddd2c1;border-radius:10px;font:inherit}textarea{min-height:100px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.timeline{display:grid;gap:14px}.memory{border-right:5px solid #b88a45}.memory h3{margin:0;color:#31564b}.memory p{line-height:1.8}.memory img{width:100%;max-height:300px;object-fit:cover;border-radius:12px;margin-top:10px}.stars{color:#b88a45;letter-spacing:2px}
+.codebox{background:#173f35;color:#fff;border-radius:17px;padding:20px;text-align:center;margin:22px 0}.code{font-size:28px;letter-spacing:3px;color:#f1d39c;margin:10px}.qr{background:#fff;padding:10px;border-radius:12px;width:190px;margin:12px auto;display:block}
+.empty{text-align:center;color:#887d71}.footer{text-align:center;padding:30px;color:#887d71}@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}.hero h2{font-size:30px}}
+</style></head><body>
+<header><h1>رحلتي إلى مصر 🇪🇬</h1><div>سجّل أماكنك وذكرياتك في رحلة واحدة</div><nav>
+<button onclick="show('home')">الرئيسية</button><button onclick="show('explore')">استكشف مصر</button><button onclick="show('add')">أضف ذكرى</button><button onclick="show('journey')">رحلتي</button>
+</nav></header><main class="container">
+<section id="home"><div class="hero"><h2>كل رحلة لها حكاية</h2><p>تطبيق بسيط لتوثيق رحلتك في مصر: الأماكن، الصور، اللحظات والتفاصيل التي تريد الاحتفاظ بها.</p><button onclick="show('explore')">ابدأ رحلتك</button></div>
+<div class="stats"><div class="stat"><b id="placesCount">0</b>أماكن تمت زيارتها</div><div class="stat"><b id="memCount">0</b>ذكرى محفوظة</div><div class="stat"><b id="daysCount">0</b>أيام موثقة</div></div>
+<div class="codebox">كود رحلتك<div class="code" id="journeyCode"></div><img class="qr" id="qr" alt="QR Code"><button onclick="copyCode()">نسخ الكود</button> <button onclick="shareJourney()">مشاركة الرحلة</button></div></section>
+<section id="explore" hidden><h2>استكشف مصر 📸</h2><div class="places" id="places"></div></section>
+<section id="add" hidden><h2>أضف ذكرى جديدة</h2><div class="form"><div class="row"><div>المكان<select id="place"><option>القاهرة</option><option>الأقصر</option><option>أسوان</option><option>الإسكندرية</option><option>الغردقة</option><option>شرم الشيخ</option></select></div><div>التاريخ<input id="date" type="date"></div></div>
+<div>عنوان الذكرى<input id="title" placeholder="مثلاً: أول مرة أشوف الأهرامات"></div><div>الصورة (رابط صورة)<input id="photo" placeholder="https://..."></div><div>احكِ لنا عن اللحظة<textarea id="text" placeholder="اكتب تفاصيل الذكرى..."></textarea></div>
+<div>التقييم<select id="rating"><option value="5">★★★★★</option><option value="4">★★★★☆</option><option value="3">★★★☆☆</option><option value="2">★★☆☆☆</option><option value="1">★☆☆☆☆</option></select></div><button onclick="addMemory()">حفظ الذكرى</button><div id="msg"></div></div></section>
+<section id="journey" hidden><div style="display:flex;justify-content:space-between;align-items:center"><h2>ذكرياتي 📸</h2><button onclick="clearAll()">مسح الكل</button></div><div class="timeline" id="timeline"></div></section>
+</main><div class="footer">Egypt Journey • Graduation Project 🇪🇬</div>
+<script>
+const places=[
+["القاهرة","https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=900&q=80","الأهرامات، المتحف المصري، وخان الخليلي."],
+["الأقصر","https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=900&q=80","مدينة التاريخ والمعابد ووادي الملوك."],
+["أسوان","https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=80","النيل، النوبة، وفيلة."],
+["الإسكندرية","https://images.unsplash.com/photo-1565018054866-968e242e4e99?auto=format&fit=crop&w=900&q=80","البحر، الكورنيش، وقلعة قايتباي."],
+["الغردقة","https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80","الشواطئ والبحر الأحمر والشعاب المرجانية."],
+["شرم الشيخ","https://images.unsplash.com/photo-1544550285-f813152fb2fd?auto=format&fit=crop&w=900&q=80","البحر الأحمر، الغوص، ورأس محمد."]
+];
+let memories=JSON.parse(localStorage.getItem("egyptJourneyMemories")||"[]");
+let code=localStorage.getItem("egyptJourneyCode")||("EGY-"+Math.random().toString(36).slice(2,8).toUpperCase());localStorage.setItem("egyptJourneyCode",code);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function show(id){document.querySelectorAll("main section").forEach(x=>x.hidden=true);document.getElementById(id).hidden=false;render();scrollTo(0,0)}
+function renderPlaces(){document.getElementById("places").innerHTML=places.map(p=>`<div class="card place"><img src="${p[1]}" alt="${esc(p[0])}" onerror="this.style.display='none'"><div><h3>${esc(p[0])}</h3><p>${esc(p[2])}</p><button onclick="quickAdd('${esc(p[0])}')">أضف للرحلة</button></div></div>`).join("")}
+function quickAdd(p){show("add");document.getElementById("place").value=p}
+function addMemory(){let title=document.getElementById("title"),text=document.getElementById("text"),date=document.getElementById("date"),photo=document.getElementById("photo");if(!title.value.trim()||!text.value.trim()||!date.value){msg.innerHTML="<span style='color:#a94442'>أكمل البيانات المطلوبة.</span>";return}memories.unshift({place:document.getElementById("place").value,title:title.value.trim(),text:text.value.trim(),date:date.value,rating:+document.getElementById("rating").value,photo:photo.value.trim()});localStorage.setItem("egyptJourneyMemories",JSON.stringify(memories));title.value="";text.value="";date.value="";photo.value="";msg.innerHTML="<span style='color:#31564b'>تم الحفظ ✓</span>";render();setTimeout(()=>show("journey"),400)}
+function render(){document.getElementById("journeyCode").textContent=code;document.getElementById("qr").src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data="+encodeURIComponent(location.href);document.getElementById("memCount").textContent=memories.length;document.getElementById("placesCount").textContent=new Set(memories.map(x=>x.place)).size;document.getElementById("daysCount").textContent=new Set(memories.map(x=>x.date)).size;document.getElementById("timeline").innerHTML=memories.length?memories.map((m,i)=>`<article class="card memory">${m.photo?`<img src="${esc(m.photo)}" alt="${esc(m.title)}" onerror="this.style.display='none'">`:""}<h3>${esc(m.title)}</h3><small>📍 ${esc(m.place)} • 📅 ${esc(m.date)}</small><p>${esc(m.text)}</p><div class="stars">${"★".repeat(m.rating)}${"☆".repeat(5-m.rating)}</div><br><button onclick="del(${i})">حذف</button></article>`).join(""):"<div class='card empty'>لسه مفيش ذكريات. أضف أول ذكرى ✨</div>"}
+function del(i){memories.splice(i,1);localStorage.setItem("egyptJourneyMemories",JSON.stringify(memories));render()}
+function clearAll(){if(confirm("مسح كل الذكريات؟")){memories=[];localStorage.setItem("egyptJourneyMemories","[]");render()}}
+function copyCode(){navigator.clipboard?.writeText(code);alert("تم نسخ الكود: "+code)}
+async function shareJourney(){if(navigator.share){await navigator.share({title:"رحلتي إلى مصر",text:"شوف رحلتي إلى مصر 🇪🇬",url:location.href})}else copyCode()}
+renderPlaces();render();
+</script></body></html>
